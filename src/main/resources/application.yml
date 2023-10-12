@@ -1,0 +1,24 @@
+server:
+  port: 8071
+
+spring:
+  r2dbc:
+    url: r2dbc:pool:postgres://localhost:5430/webflux
+    username: postgres
+    password: postgres
+  flyway:
+    url: jdbc:postgresql://localhost:5430/webflux
+    locations: classpath:db/migration
+    user: postgres
+    password: postgres
+
+jwt:
+  password:
+    encoder:
+      secret: klmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      iteration: 64
+      keyLength: 256
+
+  secret: b12b3b123b12u4y1yhr81r189yhsifya83ytolmb73ny89xs34ub5
+  expiration: 3600
+  issuer: hukku
