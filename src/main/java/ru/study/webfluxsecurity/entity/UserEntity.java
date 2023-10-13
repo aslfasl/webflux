@@ -17,8 +17,8 @@ public class UserEntity {
     private String username;
     private String password;
     private UserRole role;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

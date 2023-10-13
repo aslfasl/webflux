@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import ru.study.webfluxsecurity.entity.UserEntity;
 import ru.study.webfluxsecurity.exception.AuthException;
-import ru.study.webfluxsecurity.repository.UserRepository;
+import ru.study.webfluxsecurity.service.UserService;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SecurityService {
 
-    private final UserRepository repository;
+    private final UserService userService;
     private final PasswordEncoder encoder;
 
     @Value("${jwt.secret}")
@@ -30,12 +30,13 @@ public class SecurityService {
     private TokenDetails generateToken(UserEntity user) {
         Map<String, Object> claims = new HashMap<>() {{
             put("role", user.getRole());
+            put("username", user.getUsername());
         }};
         return generateToken(claims, user.getId().toString());
     }
 
     private TokenDetails generateToken(Map<String, Object> claims, String subject) {
-        Long expirationTimeInMillis = expirationInSeconds * 1_000L;
+        long expirationTimeInMillis = expirationInSeconds * 1_000L;
         Date expirationDate = new Date(new Date().getTime() + expirationTimeInMillis);
 
         return generateToken(expirationDate, claims, subject);
@@ -60,7 +61,7 @@ public class SecurityService {
     }
 
     public Mono<TokenDetails> authenticate(String username, String password) {
-        return repository.findByUsername(username)
+        return userService.getUserByUsername(username)
                 .flatMap(user -> {
                     if (!user.isEnabled()) {
                         return Mono.error(new AuthException("Account disabled", "USER_ACCOUNT_DISABLED"));

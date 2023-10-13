@@ -20,8 +20,8 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private UserRole role;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
